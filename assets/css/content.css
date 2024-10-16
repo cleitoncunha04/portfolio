@@ -1,5 +1,7 @@
 @import "styles.css";
 
-.content {
+@import url('home.css');
+@import "about-me.css";
+@import "skills.css";
 
-}
+

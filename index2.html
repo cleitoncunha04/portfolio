@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio - Desenvolvedor Front-End</title>
+    <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Tipografia */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            /* Removido scroll-behavior: smooth; para gerenciar via JS */
+        }
+
+        /* Cabeçalho */
+        header {
+            background: #333;
+            color: #fff;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: background 0.3s;
+        }
+
+        header.scrolled {
+            background: rgba(51, 51, 51, 0.9);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: flex-end;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* Adicionar indicação de link ativo */
+        nav ul li a.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 100%;
+            height: 2px;
+            background: #fff;
+        }
+
+        /* Seção Hero */
+        .hero {
+            background: url('https://via.placeholder.com/1200x800') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding-top: 80px; /* Espaço para o header fixo */
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content {
+            position: relative;
+            color: #fff;
+            text-align: center;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .hero-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+        }
+
+        /* Seções */
+        section {
+            padding: 60px 0;
+        }
+
+        /* Sobre Mim */
+        .about {
+            background: #f4f4f4;
+        }
+
+        .about .content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .about img {
+            flex: 1;
+            max-width: 300px;
+            border-radius: 50%;
+            margin-right: 20px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .about .text {
+            flex: 2;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .about .text.visible,
+        .about img.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Portfólio */
+        .projects {
+            background: #fff;
+        }
+
+        .projects .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .project {
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .project.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .project img {
+            width: 100%;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .project:hover img {
+            transform: scale(1.1);
+        }
+
+        .project .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(51, 51, 51, 0.7);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .project:hover .overlay {
+            opacity: 1;
+        }
+
+        /* Habilidades */
+        .skills {
+            background: #f4f4f4;
+        }
+
+        .skills ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .skills ul li {
+            background: #333;
+            color: #fff;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .skills ul li.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Contato */
+        .contact form {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .contact form input,
+        .contact form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .contact form button {
+            padding: 10px 20px;
+            border: none;
+            background: #333;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .contact form button:hover {
+            background: #555;
+        }
+
+        /* Rodapé */
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .about .content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .about img {
+                margin: 0 0 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Cabeçalho -->
+<header>
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="#hero">Início</a></li>
+                <li><a href="#about">Sobre Mim</a></li>
+                <li><a href="#projects">Portfólio</a></li>
+                <li><a href="#skills">Habilidades</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- Seção Hero -->
+<section class="hero" id="hero">
+    <div class="hero-content" id="hero-content">
+        <h1>Olá, eu sou [Seu Nome]</h1>
+        <p>Desenvolvedor Front-End</p>
+    </div>
+</section>
+
+<!-- Sobre Mim -->
+<section class="about" id="about">
+    <div class="container">
+        <h2>Sobre Mim</h2>
+        <div class="content">
+            <img src="https://via.placeholder.com/300" alt="Foto de Perfil" id="about-img">
+            <div class="text" id="about-text">
+                <p>Sou um desenvolvedor Front-End apaixonado por criar experiências web interativas e responsivas. Tenho experiência em HTML, CSS, JavaScript e frameworks modernos como React e Vue.js.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Portfólio -->
+<section class="projects" id="projects">
+    <div class="container">
+        <h2>Portfólio</h2>
+        <div class="grid">
+            <div class="project">
+                <img src="https://via.placeholder.com/600x400" alt="Projeto 1" loading="lazy">
+                <div class="overlay">
+                    <h3>Projeto 1</h3>
+                    <p>Descrição do Projeto 1</p>
+                </div>
+            </div>
+            <div class="project">
+                <img src="https://via.placeholder.com/600x400" alt="Projeto 2" loading="lazy">
+                <div class="overlay">
+                    <h3>Projeto 2</h3>
+                    <p>Descrição do Projeto 2</p>
+                </div>
+            </div>
+            <div class="project">
+                <img src="https://via.placeholder.com/600x400" alt="Projeto 3" loading="lazy">
+                <div class="overlay">
+                    <h3>Projeto 3</h3>
+                    <p>Descrição do Projeto 3</p>
+                </div>
+            </div>
+            <!-- Adicione mais projetos conforme necessário -->
+        </div>
+    </div>
+</section>
+
+<!-- Habilidades -->
+<section class="skills" id="skills">
+    <div class="container">
+        <h2>Habilidades</h2>
+        <ul>
+            <li>HTML5</li>
+            <li>CSS3</li>
+            <li>JavaScript</li>
+            <li>React</li>
+            <li>Vue.js</li>
+            <li>Responsive Design</li>
+            <li>Git</li>
+            <li>Webpack</li>
+            <!-- Adicione mais habilidades conforme necessário -->
+        </ul>
+    </div>
+</section>
+
+<!-- Contato -->
+<section class="contact" id="contact">
+    <div class="container">
+        <h2>Contato</h2>
+        <form id="contact-form">
+            <input type="text" id="name" name="name" placeholder="Seu Nome" required>
+            <input type="email" id="email" name="email" placeholder="Seu Email" required>
+            <textarea id="message" name="message" rows="5" placeholder="Sua Mensagem" required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</section>
+
+<!-- Rodapé -->
+<footer>
+    <p>&copy; 2024 [Seu Nome]. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+    // Animações ao rolar (Scroll Animations)
+    document.addEventListener('DOMContentLoaded', () => {
+        const heroContent = document.getElementById('hero-content');
+        const aboutImg = document.getElementById('about-img');
+        const aboutText = document.getElementById('about-text');
+        const projects = document.querySelectorAll('.project');
+        const skillsItems = document.querySelectorAll('.skills ul li');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Animação do Hero
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                heroContent.classList.add('visible');
+            }, 500);
+        });
+
+        // Observa as seções para adicionar animações
+        observer.observe(aboutImg);
+        observer.observe(aboutText);
+        projects.forEach(project => observer.observe(project));
+        skillsItems.forEach(item => observer.observe(item));
+
+        // Header transparente ao rolar
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+
+            // Atualizar link ativo no menu
+            updateActiveLink();
+        });
+
+        // Formulário de Contato (Simples)
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Obrigado por entrar em contato!');
+            contactForm.reset();
+        });
+
+        // Rolagem Suave Personalizada
+        const navLinks = document.querySelectorAll('nav ul li a');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+
+                if (!targetSection) return;
+
+                const headerHeight = header.offsetHeight;
+                const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+
+                smoothScrollTo(targetPosition, 800);
+            });
+        });
+
+        /**
+         * Função de rolagem suave com easing
+         * @param {number} target - Posição final em pixels
+         * @param {number} duration - Duração da animação em ms
+         */
+        function smoothScrollTo(target, duration) {
+            const start = window.pageYOffset;
+            const distance = target - start;
+            let startTime = null;
+
+            function animation(currentTime) {
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const run = ease(timeElapsed, start, distance, duration);
+                window.scrollTo(0, run);
+                if (timeElapsed < duration) requestAnimationFrame(animation);
+            }
+
+            /**
+             * Função de easing (easeInOutCubic)
+             */
+            function ease(t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t * t + b;
+                t -= 2;
+                return c / 2 * (t * t * t + 2) + b;
+            }
+
+            requestAnimationFrame(animation);
+        }
+
+        // Atualizar link ativo no menu com base na posição de rolagem
+        const sections = document.querySelectorAll('section');
+        function updateActiveLink() {
+            let index = sections.length;
+
+            while(--index && window.scrollY + header.offsetHeight < sections[index].offsetTop) {}
+
+            navLinks.forEach((link) => link.classList.remove('active'));
+            navLinks[index].classList.add('active');
+        }
+
+        updateActiveLink(); // Inicializa no carregamento
+    });
+</script>
+</body>
+</html>

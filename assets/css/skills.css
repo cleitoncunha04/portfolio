@@ -1,0 +1,33 @@
+#skills {
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    gap: 20px;
+}
+
+.skills__title {
+    font-weight: 900;
+    font-size: 1.8rem;
+}
+
+.skills__group {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    gap:20px;
+}
+
+.skills__group-list {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content:space-between;
+    width: 50%;
+}
+
+.skills__group-list-item > img {
+    width: 50px;
+}
+
+.skills__group__li-content {
+    width: 30%;
+}

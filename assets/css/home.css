@@ -1,0 +1,147 @@
+@import "styles.css";
+
+.content {
+    margin-top: 80px;
+    width: 100vw;
+}
+
+#home {
+    background: url("../images/home-bg.jpg") center center no-repeat;
+    background-size: cover;
+    height: 400px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    transition: all 0.3s ease-in;
+    width: 100%;
+}
+
+/*#home:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(100, 0, 100, 0.2);
+}*/
+
+.home__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    position: relative;
+    text-shadow: 3px 3px 10px var(--third);
+}
+
+.home__title strong {
+    color: var(--highlight);
+    font-weight: 900;
+}
+
+.home__subtitle {
+    color: var(--highlight);
+    font-weight: 800;
+    font-size: 1.5rem;
+    text-shadow: 3px 3px 10px var(--third);
+    position: relative;
+}
+
+.home__subtitle::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 2px;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: width 0.5s ease-in-out;
+}
+
+.home__subtitle::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.home__subtitle:hover:after {
+    color: var(--highlight);
+}
+
+.home__contacts {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    justify-content: center;
+    width: 100%;
+}
+
+.home__contacts-item a {
+    cursor: pointer;
+}
+
+.home__contacts-item a > img {
+    width: 40px;
+    background: var(--third);
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 3px 3px 10px var(--third);
+    transition: all 0.3s ease-in-out;
+}
+
+.home__contacts-item:hover a > img {
+    transform: scale(0.9);
+    box-shadow: 3px 3px 10px var(--highlight2);
+}
+
+@media screen and (min-width: 770px) {
+    #home {
+        height: 500px;
+    }
+
+    .home__title {
+        font-size: 2.5rem;
+    }
+
+    .home__subtitle {
+        font-size: 1.85rem;
+    }
+
+    .home__contacts {
+        gap: 60px;
+    }
+
+    .home__contacts-item a > img {
+        width: 50px;
+    }
+}
+
+@media screen and (min-width: 1366px) {
+    #home {
+        height: 600px;
+    }
+
+    .home__title {
+        font-size: 3.5rem;
+    }
+
+    .home__subtitle {
+        font-size: 2.5rem;
+    }
+
+    .home__contacts {
+        gap: 100px;
+    }
+
+    .home__contacts-item a > img {
+        width: 60px;
+    }
+}
+
+
